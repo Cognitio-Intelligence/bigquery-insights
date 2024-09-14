@@ -1,0 +1,31 @@
+{
+    "dataSourceId": "YOUR_DATA_SOURCE_ID",
+    "reportId": "YOUR_REPORT_ID",
+    "name": "Performance Dashboard",
+    "components": [
+      {
+        "type": "SCORECARD",
+        "title": "Daily Active Users",
+        "dimensions": ["date"],
+        "metrics": ["daily_active_users"]
+      },
+      {
+        "type": "SCORECARD",
+        "title": "Total Revenue",
+        "dimensions": ["date"],
+        "metrics": ["total_revenue"]
+      },
+      {
+        "type": "TIME_SERIES",
+        "title": "Performance Over Time",
+        "dimensions": ["date"],
+        "metrics": ["daily_active_users", "total_revenue"]
+      },
+      {
+        "type": "TABLE",
+        "title": "Product Performance",
+        "dimensions": ["product_name"],
+        "metrics": ["total_sold", "average_price"]
+      }
+    ]
+  }

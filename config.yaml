@@ -1,0 +1,26 @@
+project_id: local-incline-341518
+dataset_id: bigquery_usage
+region: region-eu
+LOCATION: eu
+scheduled_queries:
+  - name: Daily Usage
+    schedule: "every 24 hours"
+    query_file: daily_usage.sql
+  - name: TB Billed Hourly
+    schedule: "every 1 hour"
+    query_file: tb_billed_hourly.sql
+  - name: Average Slot Usage
+    schedule: "every 24 hours"
+    query_file: avg_slot_usage.sql
+  - name: BigQuery Daily Usage Alert
+    schedule: "every 15 minutes"
+    query_file: bigquery_daily_usage_alert.sql
+  - name: Most Used Tables
+    schedule: "every 24 hours"
+    query_file: most_used_tables.sql
+  - name: Scheduled Query Errors
+    schedule: "every 24 hours"
+    query_file: scheduled_query_errors.sql
+  - name: Performance Summary
+    schedule: "every 24 hours"
+    query_file: materialized_view.sql
