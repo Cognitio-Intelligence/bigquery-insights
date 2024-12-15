@@ -11,7 +11,7 @@ SELECT
   TIMESTAMP_TRUNC(end_time, HOUR) AS time_window,
   SUM(total_bytes_billed)/1099511627776 AS tb_billed,
 FROM
-  `${PROJECT_ID}.${REGION}.INFORMATION_SCHEMA.JOBS`
+  `region-{LOCATION}.INFORMATION_SCHEMA.JOBS`
 WHERE
   job_type = 'QUERY'
   AND statement_type != 'SCRIPT'

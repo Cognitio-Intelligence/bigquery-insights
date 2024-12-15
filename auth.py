@@ -15,6 +15,7 @@
 """Contains cloud authentication related functionality."""
 
 import logging
+import webbrowser
 from typing import List
 from urllib import parse
 
@@ -35,15 +36,23 @@ def retrieve_authorization_code(client_id: str, scopes: List[str],
     authorization_code_request = {
         'client_id': client_id,
         'scope': scopes_str,
-        'redirect_uri': REDIRECT_URI
+        'redirect_uri': REDIRECT_URI,
+        'response_type': 'code',
+        'access_type': 'offline'
     }
 
     encoded_request = parse.urlencode(
         authorization_code_request, quote_via=parse.quote)
     url = f'{BASE_URL}?{encoded_request}'
-    logging.info(
-        'Please click on the URL below to authorize %s and paste the '
-        'authorization code.', app_name)
-    logging.info('URL - %s', url)
+    
+    print(f"\nOpening browser for {app_name} authorization...")
+    print(f"If the browser doesn't open automatically, please visit this URL:\n{url}\n")
+    
+    try:
+        # Try to open the browser automatically
+        webbrowser.open(url)
+    except Exception as e:
+        print(f"Could not open browser automatically: {str(e)}")
+        print("Please copy and paste the URL into your browser manually.")
 
-    return input('Authorization Code : ')
+    return input('Please paste the authorization code here: ')

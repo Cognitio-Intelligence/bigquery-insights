@@ -12,7 +12,7 @@ SELECT
   user_email,
   error_result
 FROM
-  `${PROJECT_ID}.${REGION}.INFORMATION_SCHEMA.JOBS_BY_PROJECT`
+  `region-{LOCATION}.INFORMATION_SCHEMA.JOBS`
 WHERE
   error_result.reason != "Null"
   AND job_id LIKE "%scheduled_query%"

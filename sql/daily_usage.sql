@@ -11,7 +11,7 @@ SELECT
   SUM(total_bytes_processed)/1099511627776 AS daily_tb_processed,
   SUM(total_bytes_billed)/1099511627776 AS daily_tb_billed,
 FROM
-    `${PROJECT_ID}.${REGION}.INFORMATION_SCHEMA.JOBS`
+    `region-{LOCATION}.INFORMATION_SCHEMA.JOBS`
 
 WHERE
   AND job_type = 'QUERY'

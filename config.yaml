@@ -2,6 +2,7 @@ project_id: local-incline-341518
 dataset_id: bigquery_usage
 region: region-eu
 LOCATION: eu
+project_number: 507816165461
 scheduled_queries:
   - name: Daily Usage
     schedule: "every 24 hours"

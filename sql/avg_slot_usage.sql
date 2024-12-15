@@ -4,7 +4,7 @@ SELECT
   user_email,
   SUM(total_slot_ms) AS sum_slots
 FROM
-  `${PROJECT_ID}.${REGION}.INFORMATION_SCHEMA.JOBS`
+  `region-{LOCATION}.INFORMATION_SCHEMA.JOBS`
 WHERE
   -- Filter by the partition column first to limit the amount of data scanned.
   -- Eight days allows for jobs created before the 7 day end_time filter.
