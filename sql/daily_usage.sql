@@ -14,7 +14,7 @@ FROM
     `region-{LOCATION}.INFORMATION_SCHEMA.JOBS`
 
 WHERE
-  AND job_type = 'QUERY'
+  job_type = 'QUERY'
   AND state = 'DONE'
   AND statement_type != 'SCRIPT'
 GROUP BY

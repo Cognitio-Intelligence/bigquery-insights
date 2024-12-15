@@ -16,5 +16,3 @@ FROM
 WHERE
   error_result.reason != "Null"
   AND job_id LIKE "%scheduled_query%"
-ORDER BY
-  creation_time DESC

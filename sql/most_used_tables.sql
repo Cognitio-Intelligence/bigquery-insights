@@ -8,9 +8,8 @@ SELECT
   t.table_id,
   COUNT(*) AS num_references
 FROM
-    `region-{LOCATION}.INFORMATION_SCHEMA.JOBS`
+    `region-{LOCATION}.INFORMATION_SCHEMA.JOBS`,
   UNNEST(referenced_tables) AS t
-
 GROUP BY
   1,
   user_email,
