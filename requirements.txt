@@ -1,4 +1,0 @@
-google-cloud-bigquery
-google-cloud-bigquery-datatransfer
-PyYAML
-google-cloud-resource-manager

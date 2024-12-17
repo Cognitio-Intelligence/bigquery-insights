@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE
-  `${PROJECT_ID}.${DATASET_ID}.hourly_utilization` AS
+  `${PROJECT_ID}.${DATASET_ID}.hourly_utilization` PARTITION BY usage_date AS
 SELECT
   TIMESTAMP_TRUNC(jbo.creation_time, HOUR) as usage_time,
   EXTRACT(DATE from jbo.creation_time) as usage_date,
@@ -20,5 +20,3 @@ GROUP BY
   jbo.reservation_id,
   jbo.job_type,
   jbo.user_email
-ORDER BY
-  usage_time ASC

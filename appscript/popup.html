@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BigQuery Configuration</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #4285F4;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #357AE8;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>BigQuery Configuration</h3>
+    <form id="configForm">
+      <label for="projectId">Project ID:</label>
+      <input type="text" id="projectId" name="projectId" required />
+      <label for="datasetId">Dataset ID:</label>
+      <input type="text" id="datasetId" name="datasetId" required />
+      <label for="location">Location:</label>
+      <input type="text" id="location" name="location" required />
+      <button type="button" onclick="saveConfig()">Save Configuration</button>
+    </form>
+    <div id="response" style="margin-top: 15px; color: green;"></div>
+    <script>
+      function saveConfig() {
+        const form = document.getElementById('configForm');
+        const config = {
+          projectId: form.projectId.value,
+          datasetId: form.datasetId.value,
+          location: form.location.value,
+        };
+
+        google.script.run
+          .withSuccessHandler((response) => {
+            document.getElementById('response').innerText = response;
+          })
+          .setBigQueryConfig(config);
+      }
+    </script>
+  </body>
+</html>

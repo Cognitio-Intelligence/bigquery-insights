@@ -1,128 +1,141 @@
-# BigQuery Dataset Setup Automation
+# BigQuery Usage Monitoring & Alerting System
 
-This tool automates the creation of BigQuery datasets and scheduling of queries based on a YAML configuration file.
+A comprehensive solution for monitoring BigQuery usage, costs, and performance metrics with automated alerting capabilities.
+
+## Features
+
+- Real-time usage monitoring
+- Cost tracking and alerting
+- Performance metrics visualization
+- Automated alerts via Email, Teams, and Slack
+- Custom dashboard in Looker Studio
+- Scheduled data collection and processing
+
+## Dashboard Overview
+
+This monitoring solution is based on the [BigQuery System Tables Reports](https://github.com/GoogleCloudPlatform/bigquery-utils/tree/master/dashboards/system_tables) and includes the following reports:
+
+1. Daily Utilization Report
+2. Hourly Utilization Report
+3. Reservation Utilization Report
+4. Job Execution Report
+5. Job Error Report
+6. Job Comparison Report
 
 ## Prerequisites
 
-1. Google Cloud SDK installed and configured
-2. Python 3.7+
-3. Required permissions:
-   - BigQuery Admin (`roles/bigquery.admin`)
-   - BigQuery Data Transfer Service Admin (`roles/bigquerydatatransfer.admin`)
-   - Cloud Resource Manager Viewer (`roles/resourcemanager.projectViewer`)
+- Google Cloud Platform account with BigQuery access
+- Google Apps Script enabled
+- Required GCP permissions:
+  - BigQuery Admin (`roles/bigquery.admin`)
+  - BigQuery Data Transfer Service Admin (`roles/bigquerydatatransfer.admin`)
+  - Cloud Resource Manager Viewer (`roles/resourcemanager.projectViewer`)
 
-## Authentication Setup
+## Setup Instructions
 
-1. **Grant required permissions**:
-   ```bash
-   # Replace [USER_EMAIL] with your email
-   gcloud projects add-iam-policy-binding [PROJECT_ID] \
-       --member="user:[USER_EMAIL]" \
-       --role="roles/bigquery.admin"
+### 1. Configuration Spreadsheet Setup
 
-   gcloud projects add-iam-policy-binding [PROJECT_ID] \
-       --member="user:[USER_EMAIL]" \
-       --role="roles/bigquerydatatransfer.admin"
+1. Create a new Google Sheet
+2. Set up a "Config" sheet with the following structure:
 
-   gcloud projects add-iam-policy-binding [PROJECT_ID] \
-       --member="user:[USER_EMAIL]" \
-       --role="roles/resourcemanager.projectViewer"
-   ```
+| Cell | Content Description |
+|------|-------------------|
+| B1   | GCP Project ID    |
+| B2   | Dataset ID        |
+| B3   | Location (US/EU)  |
+| B4   | Alert Email       |
+| B5   | Teams Webhook URL |
+| B6   | Slack Webhook URL |
 
-2. **Authenticate with gcloud**:
-   ```bash
-   gcloud auth login
-   gcloud auth application-default login
-   ```
+### 2. BigQuery Configuration
 
-3. **Enable required APIs**:
-   ```bash
-   gcloud services enable bigquerydatatransfer.googleapis.com
-   gcloud services enable cloudresourcemanager.googleapis.com
-   ```
+1. Create a new BigQuery dataset to store materialized views
+2. Configure the dataset location (US or EU)
+3. Note: The SQL files in the `sql/` directory will be executed via Apps Script triggers, not BigQuery scheduled queries
 
-2. **Run the script**:
-   - The script will provide a URL for authentication
-   - Open the URL in your browser
-   - Authorize the application
-   - Copy the authorization code
-   - Paste it when prompted
+### 3. Apps Script Setup
 
-## Setup
+1. Create a new Google Apps Script project
+2. Copy the contents of `sheets_appscript.js` into your project
+3. Set up the custom menu and triggers:
+   - "Run BigQuery Daily Usage Alert" (15-minute intervals)
+   - "Run Dashboard Tables" (daily at 9:00 AM)
+   - "Setup Triggers" (one-time setup)
 
-1. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+### 4. Dashboard Setup
 
-2. Configure your datasets:
-   - Edit the `config.yaml` file
-   - Add your dataset configurations
-   - Schedule formats should be in the format "every X hours/minutes/days"
+1. Access the [Looker Studio Dashboard Template](https://lookerstudio.google.com/reporting/f7a949a1-eafe-4651-8376-9b0bc1dddf54)
+2. Create a copy of the dashboard
+3. Update data sources to point to your materialized tables:
+   - `{project_id}.{dataset_id}.daily_utilization`
+   - `{project_id}.{dataset_id}.hourly_utilization`
+   - `{project_id}.{dataset_id}.job_usage`
+   - `{project_id}.{dataset_id}.job_errors`
+   - `{project_id}.{dataset_id}.commitments_timeline`
 
-3. Run the setup script:
-   ```bash
-   python setup_datasets.py
-   ```
+## Automated Processes
 
-## Configuration Format (config.yaml)
+### SQL Execution Flow
 
-| Column | Description | Example |
-|--------|-------------|---------|
-| project_id | GCP Project ID | my-project-123 |
-| dataset_id | BigQuery Dataset Name | bigquery_usage |
-| location | Dataset Location | US or EU |
-| project_number | GCP Project Number | 507816165461 |
-| daily_usage_schedule | Schedule for daily usage query | every 24 hours |
-| tb_billed_schedule | Schedule for TB billed query | every 1 hour |
-| slot_usage_schedule | Schedule for slot usage query | every 24 hours |
-| alert_schedule | Schedule for alerts | every 15 minutes |
-| most_used_schedule | Schedule for most used tables | every 24 hours |
-| errors_schedule | Schedule for error tracking | every 24 hours |
+1. Apps Script fetches SQL from GitHub repository
+2. Variables are replaced with configuration values
+3. Queries are executed against BigQuery
+4. Results are materialized into tables
 
-## Troubleshooting
+### Alert System
 
-1. Authentication Errors:
-   - Ensure you've completed the authentication setup
-   - Check that your service account has the required permissions
-   - Verify the service account JSON file is accessible
+The system monitors usage and sends alerts through:
+- Email (with PDF attachment)
+- Microsoft Teams
+- Slack
 
-2. Scheduling Errors:
-   - Verify the schedule format is correct
-   - Check that the SQL files exist in the sql/ directory
-   - Ensure the service account has permission to create transfer configs
+Alerts are triggered for:
+- Daily usage thresholds (1TB, 3TB, 5TB, 10TB, 20TB)
+- Error conditions
+- Performance issues
 
-## Support
+### Dashboard Updates
 
-For issues and questions, please create an issue in the repository.
-
-## Spreadsheet Columns
-
-- project_id: GCP project ID
-- dataset_id: Name for the BigQuery dataset
-- location: Dataset location (e.g., US, EU)
-4. Set up the AppScript project:
-   - Create a new Google Apps Script project
-   - Copy the contents of `appscript/Code.gs` and `appscript/appsscript.json` into your project
-   - Update the `spreadsheetId`, `teamsWebhookUrl`, and `slackWebhookUrl` in `Code.gs`
-   - Run the `createTrigger` function to set up the hourly alert check
-5. Import the dashboard template into Data Studio (now Looker Studio):
-   - Create a new Data Studio report
-   - Use the `dashboard_template.json` as a reference to set up your visualizations
-   - Connect your BigQuery data sources
-
-## Components
-
-- Scheduled Queries: Automated data processing in BigQuery
-- AppScript Alerts: Sends notifications to Teams and Slack based on performance thresholds
-- Dashboard Template: Visualizes insights from processed data in Looker Studio
-
-## Customization
-
-- Modify the SQL queries in the `sql/` directory to fit your data structure and requirements
-- Adjust the alert conditions in the `sendAlerts` function in `appscript/Code.gs`
-- Customize the dashboard components in `dashboard/dashboard_template.json` to match your reporting needs
+Tables are refreshed daily at 9:00 AM:
+- Commitments Timeline
+- Daily Utilization
+- Hourly Utilization
+- Job Usage
+- Job Errors
 
 ## Maintenance
 
-Regularly check the BigQuery scheduled queries and AppScript logs to ensure everything is running smoothly. Update the queries and alert thresholds as your business needs evolve.
+### Regular Tasks
+
+1. Monitor Apps Script execution logs
+2. Review alert thresholds
+3. Verify webhook configurations
+4. Update SQL queries as needed
+
+### Troubleshooting
+
+1. **Query Failures**
+   - Check Apps Script logs
+   - Verify BigQuery permissions
+   - Confirm SQL syntax
+
+2. **Alert Issues**
+   - Verify webhook URLs
+   - Check email configuration
+   - Review trigger status
+
+## Support Resources
+
+- [BigQuery System Tables Documentation](https://cloud.google.com/bigquery/docs/information-schema-intro)
+- [Apps Script Documentation](https://developers.google.com/apps-script)
+- [Looker Studio Documentation](https://support.google.com/looker-studio)
+
+## License
+
+This project is open source and available under the MIT License.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
