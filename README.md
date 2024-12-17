@@ -17,10 +17,8 @@ This monitoring solution is based on the [BigQuery System Tables Reports](https:
 
 1. Daily Utilization Report
 2. Hourly Utilization Report
-3. Reservation Utilization Report
 4. Job Execution Report
 5. Job Error Report
-6. Job Comparison Report
 
 ## Prerequisites
 
