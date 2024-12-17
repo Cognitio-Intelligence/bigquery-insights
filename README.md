@@ -96,7 +96,7 @@ This sheet is automatically created/updated by the system and contains:
 - Query performance data
 - Cost tracking information
 
-Access the template spreadsheet here: [BigQuery Insights Configuration](https://docs.google.com/spreadsheets/d/1TI4sg-MPevog4gF6Vk9vd2mBLdbM8eIf-uNs4PKH6_0/edit?gid=0)
+Access the template spreadsheet here: [BigQuery Insights Configuration](https://docs.google.com/spreadsheets/d/1TI4sg-MPevog4gF6Vk9vd2mBLdbM8eIf-uNs4PKH6_o/edit?gid=0#gid=0)
 
 ### Sheet Automation
 
