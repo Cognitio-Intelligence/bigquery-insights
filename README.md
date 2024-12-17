@@ -73,6 +73,47 @@ This monitoring solution is based on the [BigQuery System Tables Reports](https:
    - `{project_id}.{dataset_id}.job_errors`
    - `{project_id}.{dataset_id}.commitments_timeline`
 
+## Spreadsheet Structure
+
+The monitoring solution uses a Google Spreadsheet with two main sheets:
+
+### 1. Config Sheet
+
+Configuration settings for the monitoring system:
+
+| Cell | Parameter      | Description                              | Example                    |
+|------|---------------|------------------------------------------|----------------------------|
+| B1   | PROJECT_ID    | GCP Project ID                           | my-project-123             |
+| B2   | DATASET_ID    | BigQuery Dataset ID                      | bq_monitoring              |
+| B3   | LOCATION      | Dataset Location                         | eu                         |
+| B4   | EMAIL         | Alert Recipient Email                    | alerts@company.com         |
+| B5   | TEAMS WEBHOOK | Microsoft Teams Webhook URL              | https://teams.webhook.url  |
+| B6   | SLACK WEBHOOK | Slack Webhook URL                        | https://slack.webhook.url  |
+
+### 2. Results Sheet
+
+This sheet is automatically created/updated by the system and contains:
+- Daily usage metrics
+- Alert thresholds status
+- Query performance data
+- Cost tracking information
+
+Access the template spreadsheet here: [BigQuery Insights Configuration](https://docs.google.com/spreadsheets/d/1TI4sg-MPevog4gF6Vk9vd2mBLdbM8eIf-uNs4PKH6_0/edit?gid=0)
+
+### Sheet Automation
+
+The spreadsheet includes a custom menu "BigQuery Usage 👀" with the following options:
+1. **Run BigQuery Daily Usage Alert**
+   - Executes usage monitoring
+   - Updates Results sheet
+   - Triggers notifications
+2. **Run Dashboard Tables**
+   - Updates materialized tables
+   - Refreshes dashboard data
+3. **Setup Triggers**
+   - Configures automated execution
+   - Sets up monitoring schedule
+
 ## Automated Processes
 
 ### SQL Execution Flow
@@ -133,6 +174,28 @@ Tables are refreshed daily at 9:00 AM:
 ## License
 
 This project is open source and available under the MIT License.
+
+MIT License
+
+Copyright (c) 2024
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 ## Contributing
 
