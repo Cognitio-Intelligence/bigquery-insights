@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE
-  `${PROJECT_ID}.${DATASET_ID}.hourly_utilization` PARTITION BY usage_date AS
+  `${PROJECT_ID}.${DATASET_ID}.hourly_utilization`  AS
 SELECT
   TIMESTAMP_TRUNC(jbo.creation_time, HOUR) as usage_time,
   EXTRACT(DATE from jbo.creation_time) as usage_date,
