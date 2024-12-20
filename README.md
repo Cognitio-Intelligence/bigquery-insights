@@ -174,3 +174,7 @@ Tables are refreshed daily at 9:00 AM:
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
+
+## Disclaimer
+
+All usage responsibilities belong to the user. The creators and contributors of this system are not responsible for any costs, data loss, or other issues that may arise from using this monitoring solution.
